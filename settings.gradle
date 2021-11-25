@@ -7,4 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "DonkeyLockKit"
-include ':app'
+include ':sample'
