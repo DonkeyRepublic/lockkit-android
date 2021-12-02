@@ -1,5 +1,5 @@
 # Donkey Lock Kit
-<img src="https://app.bitrise.io/app/b03242d68d965a84/status.svg?token=4X7nR4w8EwAj2589-hzUKQ&branch=develop"> <img src="https://maven-badges.herokuapp.com/maven-central/bike.donkey/lockkit/badge.svg?style=flat&gav=true"> <img src="https://img.shields.io/nexus/s/bike.donkey/lockkit?label=snapshots&server=https%3A%2F%2Fs01.oss.sonatype.org">
+<img src="https://app.bitrise.io/app/b03242d68d965a84/status.svg?token=4X7nR4w8EwAj2589-hzUKQ&branch=develop"> <img src="https://img.shields.io/maven-central/v/bike.donkey/lockkit?color=tile&label=maven%20central">
 <br/>
 <br/>
 
@@ -129,7 +129,10 @@ Note that it is only possible to update the `DonkeyConfig` values before calling
 
 ## Changelog
 
-<b>v1.1.1-SNAPSHOT</b><br/>`2021-11-25`
+<b>v1.1.2</b><br/>`2021-12-02`
+- added support for the latest Android 12
+
+<b>v1.1.1</b><br/>`2021-12-01`
 - fixed potential issues of having duplicates while using the Donkey Lock Kit with other libraries
 - fixed issue with ExtraLockCheck not emitting result when bluetooth got disabled
 
