@@ -129,6 +129,11 @@ Note that it is only possible to update the `DonkeyConfig` values before calling
 
 ## Changelog
 
+<b>v1.2.0-SNAPSHOT</b><br/>`2022-07-21`
+- introduced `UnlockCommandError` and `LockCommandError` for unexpected errors during locking/unlocking instead of calling `LockTimeout`
+- fixed wrong MTU size for sending commands to AXA lock v2 on some devices
+- introduced `BluetoothUnauthorized` error for cases when Bluetooth permissions are missing (Android 12+)
+
 <b>v1.1.2</b><br/>`2021-12-02`
 - added support for the latest Android 12
 
