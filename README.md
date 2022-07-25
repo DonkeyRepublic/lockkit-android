@@ -57,6 +57,17 @@ allProjects {
 
 Then add the Donkey Lock Kit dependency in the module-level gradle the same way as for the production release version. Note however that the beta release version number will always end with a suffix `-SNAPSHOT`. Make sure not to rely on beta releases too much since they can be removed and stop being available at any future time.
 
+### Bluetooth LE requirement
+
+By default Donkey Lock Kit requires Bluetooth LE hardware. This can prevent some devices from installing the app in the Play Store. If Donkey Lock Kit is used for optional feature in your app, you can disable Bluetooth LE hardware requirement in `AndroidManifest.xml`:
+
+```xml
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false"
+        tools:replace="android:required" />
+```
+
 ## Usage
 The framework exposes [DonkeyLockKit](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-lock-kit/index.html) Kotlin `object` that handles all the interaction with the Donkey Republic locks.
 
