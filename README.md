@@ -140,6 +140,9 @@ Note that it is only possible to update the `DonkeyConfig` values before calling
 
 ## Changelog
 
+<b>v1.3.0</b><br/>`2022-07-27`
+- finished migration from realm to sqldelight — this version no longer depends on realm, which should decrease app size. To be able to keep eKeys for users which will update app during rentals it's advised to update to 1.2.0 first, and after grace period update to 1.3.0.
+
 <b>v1.2.0</b><br/>`2022-07-26`
 - introduced `UnlockCommandError` and `LockCommandError` for unexpected errors during locking/unlocking instead of calling `LockTimeout`
 - fixed wrong MTU size for sending commands to AXA lock v2 on some devices
