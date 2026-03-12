@@ -1,7 +1,11 @@
 package com.donkeyrepublic.apps.lockkit
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import bike.donkey.lockkit.DonkeyConfig
 import bike.donkey.lockkit.DonkeyLockKit
 import bike.donkey.lockkit.updates.ConnectionUpdate
@@ -10,6 +14,13 @@ class LockKitActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_lock_kit)
+        WindowCompat.enableEdgeToEdge(window)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
+            val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom)
+            return@setOnApplyWindowInsetsListener insets
+        }
 
         // optionally update the config values
         DonkeyLockKit.config.apply {
@@ -18,90 +29,120 @@ class LockKitActivity : AppCompatActivity() {
         }
 
         // initialize the sdk
-        DonkeyLockKit.initializeSdk(this, SDK_TOKEN, onResult = { result ->
-            result.onSuccess { println("InitializeSDK = success") }
-                .onFailure { println("InitializeSDK = failure (${it.message})") }
-        })
-
-        // initialize the lock before doing any other action with it (initialize only once)
-        DonkeyLockKit.initializeLock(DEVICE_NAME, KEY, PASSKEY, onResult = { result ->
-            result.onSuccess { println("InitializeLock = success") }
-                .onFailure { println("InitializeLock = failure (${it.message})") }
-        })
-
-        // example usage for unlocking
-        DonkeyLockKit.unlock(DEVICE_NAME,
-            onUpdate = { update ->
-                // you can use the update description for logging (not suitable for updating UI)
-                println(update.description)
-                // below are relevant connection updates for unlocking
-                when (update) {
-                    is ConnectionUpdate.Searching -> println("Searching")
-                    is ConnectionUpdate.WeakSignal -> println("WeakSignal")
-                    is ConnectionUpdate.Connecting -> println("Connecting")
-                    is ConnectionUpdate.Connected -> println("Connected")
-                    is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
-                    is ConnectionUpdate.SendingCommand -> println("SendingCommand")
-                    else -> println("do nothing")
-                }
-            },
+        DonkeyLockKit.initializeSdk(
+            this, SDK_TOKEN,
             onResult = { result ->
-                result.onSuccess { println("Unlock = success") }
-                    .onFailure { println("Unlock = failure (${it.message})") }
-            }
+                result.onSuccess { println("InitializeSDK = success") }
+                    .onFailure { println("InitializeSDK = failure (${it.message})") }
+            },
         )
 
-        // example usage for locking
-        DonkeyLockKit.lock(DEVICE_NAME,
-            onUpdate = { update ->
-                // you can use the update description for logging (not suitable for updating UI)
-                println(update.description)
-                // below are relevant connection updates for locking
-                when (update) {
-                    is ConnectionUpdate.Searching -> println("Searching")
-                    is ConnectionUpdate.WeakSignal -> println("WeakSignal")
-                    is ConnectionUpdate.Connecting -> println("Connecting")
-                    is ConnectionUpdate.Connected -> println("Connected")
-                    is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
-                    is ConnectionUpdate.SendingCommand -> println("SendingCommand")
-                    is ConnectionUpdate.PushToLock -> println("PushToLock")
-                    else -> println("do nothing")
-                }
-            },
-            onResult = { result ->
-                result.onSuccess { println("Lock = success") }
-                    .onFailure { println("Lock = failure (${it.message})") }
-            }
-        )
+        findViewById<Button>(R.id.initialize).setOnClickListener {
+            // initialize the lock before doing any other action with it (initialize only once)
+            DonkeyLockKit.initializeLock(
+                DEVICE_NAME, KEY, PASSKEY,
+                onResult = { result ->
+                    result.onSuccess { println("InitializeLock = success") }
+                        .onFailure { println("InitializeLock = failure (${it.message})") }
+                },
+            )
+        }
 
-        // example usage for preparing end rental
-        DonkeyLockKit.prepareEndRental(DEVICE_NAME,
-            onUpdate = { update ->
-                // you can use the update description for logging (not suitable for updating UI)
-                println(update.description)
-                // below are relevant connection updates for preparing end rental
-                when (update) {
-                    is ConnectionUpdate.Searching -> println("Searching")
-                    is ConnectionUpdate.WeakSignal -> println("WeakSignal")
-                    is ConnectionUpdate.Connecting -> println("Connecting")
-                    is ConnectionUpdate.Connected -> println("Connected")
-                    is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
-                    is ConnectionUpdate.SendingCommand -> println("SendingCommand")
-                    is ConnectionUpdate.PushToLock -> println("PushToLock")
-                    is ConnectionUpdate.ExtraLockCheck -> println("ExtraLockCheck")
-                }
-            },
-            onResult = { result ->
-                result.onSuccess { println("PrepareEndRental = success") }
-                    .onFailure { println("PrepareEndRental = failure (${it.message})") }
-            }
-        )
+        findViewById<Button>(R.id.unlock).setOnClickListener {
+            // example usage for unlocking
+            DonkeyLockKit.unlock(
+                DEVICE_NAME,
+                onUpdate = { update ->
+                    // you can use the update description for logging (not suitable for updating UI)
+                    println(update.description)
+                    // below are relevant connection updates for unlocking
+                    when (update) {
+                        is ConnectionUpdate.Searching -> println("Searching")
+                        is ConnectionUpdate.WeakSignal -> println("WeakSignal")
+                        is ConnectionUpdate.Connecting -> println("Connecting")
+                        is ConnectionUpdate.Connected -> println("Connected")
+                        is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
+                        is ConnectionUpdate.SendingCommand -> println("SendingCommand")
+                        // only for Linka locks
+                        ConnectionUpdate.AutomaticUnlock -> println("AutomaticUnlock")
+                        else -> println("do nothing")
+                    }
+                },
+                onResult = { result ->
+                    result.onSuccess { println("Unlock = success") }
+                        .onFailure { println("Unlock = failure (${it.message})") }
+                },
+            )
+        }
 
-        // remember to finalize the lock when not having any more use for it (usually after end rental on TOMP)
-        DonkeyLockKit.finalizeLock(DEVICE_NAME, onResult = { result ->
-            result.onSuccess { println("FinalizeLock = success") }
-                .onFailure { println("FinalizeLock = failure (${it.message})") }
-        })
+        findViewById<Button>(R.id.lock).setOnClickListener {
+            // example usage for locking
+            DonkeyLockKit.lock(
+                DEVICE_NAME,
+                onUpdate = { update ->
+                    // you can use the update description for logging (not suitable for updating UI)
+                    println(update.description)
+                    // below are relevant connection updates for locking
+                    when (update) {
+                        is ConnectionUpdate.Searching -> println("Searching")
+                        is ConnectionUpdate.WeakSignal -> println("WeakSignal")
+                        is ConnectionUpdate.Connecting -> println("Connecting")
+                        is ConnectionUpdate.Connected -> println("Connected")
+                        is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
+                        is ConnectionUpdate.SendingCommand -> println("SendingCommand")
+                        // AXA locks
+                        is ConnectionUpdate.PushToLock -> println("PushToLock")
+                        // Linka locks
+                        ConnectionUpdate.AutomaticLock -> println("AutomaticLock")
+                        else -> println("do nothing")
+                    }
+                },
+                onResult = { result ->
+                    result.onSuccess { println("Lock = success") }
+                        .onFailure { println("Lock = failure (${it.message})") }
+                },
+            )
+        }
+
+
+        findViewById<Button>(R.id.prepareEndRental).setOnClickListener {
+            // example usage for preparing end rental
+            DonkeyLockKit.prepareEndRental(
+                DEVICE_NAME,
+                onUpdate = { update ->
+                    // you can use the update description for logging (not suitable for updating UI)
+                    println(update.description)
+                    // below are relevant connection updates for preparing end rental
+                    when (update) {
+                        is ConnectionUpdate.Searching -> println("Searching")
+                        is ConnectionUpdate.WeakSignal -> println("WeakSignal")
+                        is ConnectionUpdate.Connecting -> println("Connecting")
+                        is ConnectionUpdate.Connected -> println("Connected")
+                        is ConnectionUpdate.ReadCharacteristics -> println("ReadCharacteristics")
+                        is ConnectionUpdate.SendingCommand -> println("SendingCommand")
+                        is ConnectionUpdate.PushToLock -> println("PushToLock")
+                        is ConnectionUpdate.ExtraLockCheck -> println("ExtraLockCheck")
+                        ConnectionUpdate.AutomaticLock -> println("AutomaticLock")
+                        else -> println("do nothing")
+                    }
+                },
+                onResult = { result ->
+                    result.onSuccess { println("PrepareEndRental = success") }
+                        .onFailure { println("PrepareEndRental = failure (${it.message})") }
+                },
+            )
+        }
+
+        findViewById<Button>(R.id.finalize).setOnClickListener {
+            // remember to finalize the lock when not having any more use for it (usually after end rental on TOMP)
+            DonkeyLockKit.finalizeLock(
+                DEVICE_NAME,
+                onResult = { result ->
+                    result.onSuccess { println("FinalizeLock = success") }
+                        .onFailure { println("FinalizeLock = failure (${it.message})") }
+                },
+            )
+        }
     }
 
     private companion object {

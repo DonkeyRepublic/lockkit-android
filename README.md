@@ -11,9 +11,9 @@ Donkey Lock Kit APIs are available after you authenticated with the SDK token re
 Contact your representative at Donkey Republic to obtain the SDK token.
 
 ### System requirements
-- <b>Android 5.0 Lollipop (API 21)</b> is the minimum required version for deployment
+- <b>Android 7.0 (API 23)</b> is the minimum required version for deployment
 - The framework has been built primarily with <b>Kotlin</b> in mind
-- The framework has been built with <b>Gradle version 7.0</b> and <b>Android gradle version 4.2.1</b>
+- The framework has been built with <b>Gradle version 9.4.0</b> and <b>Android gradle version 9.1.0</b>
 
 ## Getting started
 Donkey Lock Kit is available via <b>MavenCentral</b> repository. In order to apply the dependency, add the `mavenCentral` repository in the top-level gradle like this:
@@ -48,7 +48,7 @@ For using beta releases of Donkey Lock Kit in your project, add the `maven snaps
 ```groovy
 allProjects {
     repositories {
-        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' } // for beta versions (snapshots)
+        maven { url 'https://central.sonatype.com/repository/maven-snapshots/' } // for beta versions (snapshots)
     }
 }
 ```
@@ -117,7 +117,7 @@ Following is the recommended sequence of lock handling:
 5. [finalizeLock](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-lock-kit/finalize-lock.html) - after successful [finish of the rental on TOMP](https://github.com/DonkeyRepublic/donkey_tomp#finishing-rental)
 
 ## Configuration
-In the need of supply additional configuration to the framework, [DonkeyConfig](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/index.html) is provided. Default configuration is set with [Server Environment](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-server-environment/index.html) to [LIVE](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-server-environment/-l-i-v-e/index.html) and [Log Level](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-log-level/index.html) to [DEBUG](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-log-level/-d-e-b-u-g/index.html).
+In the need of supply additional configuration to the framework, [DonkeyConfig](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/index.html) is provided. Default configuration is set with [Server Environment](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-server-environment/index.html) to [LIVE](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-server-environment/-l-i-v-e/index.html) and [Log Level](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-log-level/index.html) to [OFF](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-config/-log-level/-o-f-f/index.html).
 
 It is a `val` therefore it is not possible to update `DonkeyConfig` itself but only its internal variables:
 
@@ -139,6 +139,12 @@ It is a `val` therefore it is not possible to update `DonkeyConfig` itself but o
 Note that it is only possible to update the `DonkeyConfig` values before calling of [initializeSdk](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-lock-kit/initialize-sdk.html) function.
 
 ## Changelog
+<b>v1.4.0</b><br/>`2026-03-10`
+- Added support for Gen4 bikes and Linka lock
+- Introduce new ConnectionUpdates: AutomaticLock and AutomaticUnlock for new locks
+- Improved locking and unlocking for previous bike generations
+- Increased targetSdk to 36 and minSdk to 23
+- Set default logging level to OFF
 
 <b>v1.3.0</b><br/>`2022-07-27`
 - finished migration from realm to sqldelight — this version no longer depends on realm, which should decrease app size. To be able to keep eKeys for users which will update app during rentals it's advised to update to 1.2.0 first, and after grace period update to 1.3.0.
