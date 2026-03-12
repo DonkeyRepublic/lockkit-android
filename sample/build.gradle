@@ -1,15 +1,14 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
 }
 
 android {
-    compileSdk 31
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.donkeyrepublic.apps.lockkit"
-        minSdk 21
-        targetSdk 31
+        minSdk 23
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -17,23 +16,27 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+
+    namespace 'com.donkeyrepublic.apps.lockkit'
 }
 
 dependencies {
-    implementation 'bike.donkey:lockkit:1.1.2'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+    implementation 'bike.donkey:lockkit:1.4.0'
+    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.13.0'
 }
