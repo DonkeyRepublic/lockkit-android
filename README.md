@@ -139,6 +139,9 @@ It is a `val` therefore it is not possible to update `DonkeyConfig` itself but o
 Note that it is only possible to update the `DonkeyConfig` values before calling of [initializeSdk](https://developer.donkey.bike/tomp/lockkit/docs/android/-donkey%20-lock%20-kit/bike.donkey.lockkit/-donkey-lock-kit/initialize-sdk.html) function.
 
 ## Changelog
+<b>v1.4.1</b><br/>`2026-07-06`
+- Improve error handling
+
 <b>v1.4.0</b><br/>`2026-03-10`
 - Added support for Gen4 bikes and Linka lock
 - Introduce new ConnectionUpdates: AutomaticLock and AutomaticUnlock for new locks
